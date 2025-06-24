@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="abc123XYZ456..." />
+  <title>Mi Tienda</title>
+  ...
+</head>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ropa Urbana Novas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #e8eaf6, #f5f5f5);
+    }
+    header {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    .productos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+    .producto {
+      background: white;
+      border: 1px solid #ccc;
+      margin: 10px;
+      padding: 15px;
+      width: 280px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .producto img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    select, input[type=number] {
+      width: 100%;
+      padding: 5px;
+      margin: 5px 0;
+    }
+    .boton {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .boton:hover {
+      background-color: #094ec1;
+    }
+    .carrito, .contacto, .instagram {
+      padding: 20px;
+      background: white;
+      margin: 20px;
+      border-radius: 8px;
+    }
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Ropa Urbana Novas</h1>
+  <p>By Novas Garcías Ángel Augusto</p>
+</header>
+
+<nav>
+  <a href="#productos">Catálogo</a>
+  <a href="#carrito">Carrito</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#instagram">Instagram</a>
+</nav>
+
+<section id="productos" class="productos">
+  <div class="producto">
+    <img src="https://via.placeholder.com/250x300?text=Camiseta+Negra">
+    <h3>Camiseta Negra</h3>
+    <p>RD$ 800</p>
+    <label>Talla:</label>
+    <select id="talla1"><option>S</option><option>M</option><option>L</option></select>
+    <label>Cantidad:</label>
+    <input type="number" id="cant1" value="1" min="1">
+    <button class="boton" onclick="agregarAlCarrito('Camiseta Negra', 800, 'talla1', 'cant1')">Agregar al carrito</button>
+  </div>
+
+  <div class="producto">
+    <img src="https://via.placeholder.com/250x300?text=Jean+Azul">
+    <h3>Jean Azul</h3>
+    <p>RD$ 1200</p>
+    <label>Talla:</label>
+    <select id="talla2"><option>28</option><option>30</option><option>32</option></select>
+    <label>Cantidad:</label>
+    <input type="number" id="cant2" value="1" min="1">
+    <button class="boton" onclick="agregarAlCarrito('Jean Azul', 1200, 'talla2', 'cant2')">Agregar al carrito</button>
+  </div>
+</section>
+
+<section id="carrito" class="carrito">
+  <h2>🛒 Carrito</h2>
+  <div id="lista-carrito"></div>
+  <h3>Total: RD$ <span id="total">0</span></h3>
+  <button class="boton" onclick="enviarPorWhatsApp()">Pagar por WhatsApp</button>
+  <button class="boton" onclick="pagarPaypal()">Simular pago con PayPal</button>
+</section>
+
+<section id="contacto" class="contacto">
+  <h2>📩 Formulario de Contacto</h2>
+  <form>
+    <label>Nombre:</label><br><input type="text" required><br>
+    <label>Email:</label><br><input type="email" required><br>
+    <label>Mensaje:</label><br><textarea rows="4" required></textarea><br>
+    <button type="submit" class="boton">Enviar</button>
+  </form>
+</section>
+
+<section id="instagram" class="instagram">
+  <h2>📸 Instagram</h2>
+  <iframe src="https://www.instagram.com/fashion/embed" title="Instagram"></iframe>
+</section>
+
+<footer>
+  <p>Contacto WhatsApp: <a href="https://wa.me/18297982094" style="color:lightgreen;" target="_blank">829-798-2094</a></p>
+  <p>&copy; 2025 Ropa Urbana Novas</p>
+</footer>
+
+<script>
+  let carrito = [];
+  let total = 0;
+
+  function agregarAlCarrito(nombre, precio, tallaId, cantId) {
+    const talla = document.getElementById(tallaId).value;
+    const cantidad = parseInt(document.getElementById(cantId).value);
+    const subtotal = precio * cantidad;
+    carrito.push({nombre, talla, cantidad, subtotal});
+    total += subtotal;
+    actualizarCarrito();
+  }
+
+  function actualizarCarrito() {
+    const lista = document.getElementById("lista-carrito");
+    lista.innerHTML = "";
+    carrito.forEach(item => {
+      lista.innerHTML += `<p>${item.nombre} | Talla: ${item.talla} | Cantidad: ${item.cantidad} | Subtotal: RD$${item.subtotal}</p>`;
+    });
+    document.getElementById("total").innerText = total;
+  }
+
+  function enviarPorWhatsApp() {
+    let mensaje = "Hola, quiero hacer un pedido:\n";
+    carrito.forEach(item => {
+      mensaje += `- ${item.nombre} | Talla: ${item.talla} | Cantidad: ${item.cantidad} | Subtotal: RD$${item.subtotal}\n`;
+    });
+    mensaje += `\nTotal: RD$${total}`;
+    const url = `https://wa.me/18297982094?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+  }
+
+  function pagarPaypal() {
+    alert("Simulación: Redirigiendo a PayPal... (Integración real disponible más adelante)");
+  }
+</script>
+
+</body>
+</html>
